@@ -11,6 +11,9 @@ var categorySchema = new Schema({
 	},
 	description : {
 		type: 'String',
+	},
+	iconLink: {
+		type: 'String'
 	}
 });
 
