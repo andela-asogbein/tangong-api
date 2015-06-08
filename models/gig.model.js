@@ -15,7 +15,7 @@ var GigSchema = new Schema({
     },
     description: {
       type: String,
-      required: 'Describe whay you have to offer in details'
+      required: 'Describe what you have to offer in details'
     },
     duration: {
       type: Number,
@@ -26,6 +26,6 @@ var GigSchema = new Schema({
       type: Schema.ObjectId,
       ref: 'User'
     }
-});
+}, {versionKey: false});
 
 mongoose.model("Gig", GigSchema);
