@@ -11,6 +11,7 @@ var User = mongoose.model("User");
 module.exports = {
 
   addGig: function(req, res){
+    console.log(req.body);
     var gig = new Gig(req.body);
     gig.save(function(err, gig){
       if(err){
@@ -21,7 +22,7 @@ module.exports = {
   },
 
   getGigs: function(req, res){
-    Gig.find({}).populate('addedBy').exec(function(err, gigs){
+    Gig.find({}).populate('addedBy category').exec(function(err, gigs){
       if(err){
         return res.json(err);
       }
@@ -49,6 +50,14 @@ module.exports = {
 
   deleteGig: function(req, res){
     Gig.remove({_id: req.params.gig_id}, function(err, gig){
+      if(err){
+        return res.json(err);
+      }
+      res.status(200).json(gig);
+    });
+  },
+  deleteAll: function(req, res){
+    Gig.remove({}, function(err, gig){
       if(err){
         return res.json(err);
       }

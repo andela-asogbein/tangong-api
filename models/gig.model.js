@@ -10,8 +10,8 @@ var GigSchema = new Schema({
       required: 'Enter gig title'
     },
     category: {
-      type: String,
-      required: 'Enter category of gig'
+      type: Schema.ObjectId,
+      ref: 'Category'
     },
     description: {
       type: String,

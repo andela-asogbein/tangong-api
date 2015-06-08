@@ -28,5 +28,6 @@ app.use(function(req, res, next) {
 
 require('./routes/user.route')(app);
 require('./routes/gig.route')(app);
+require('./routes/category.route')(app);
 
 module.exports = app;
