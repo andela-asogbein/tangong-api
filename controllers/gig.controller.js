@@ -8,11 +8,13 @@ require("../models/user.model");
 var Gig = mongoose.model("Gig");
 var User = mongoose.model("User");
 
+var userController = require("./user.controller");
+
 module.exports = {
 
   addGig: function(req, res){
-    console.log(req.body);
-    var gig = new Gig(req.body);
+    req.body.addedBy = req.user.id;
+    var gig = new Gig(req.body)
     gig.save(function(err, gig){
       if(err){
         return res.json(err);

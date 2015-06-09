@@ -7,15 +7,15 @@ var User = mongoose.model('User');
 
 //authentication
 var jwt =require('jsonwebtoken');
-var superSecret = 'andebookswebapplication';
+var superSecret = 'tangoforme';
 
 
 module.exports = {
-
+  
   authenticateUser: function(req, res){
     User.findOne({
-      username: req.body.username
-    }).select('username password email admin').exec(function(err, user){
+      username: req.body.username,
+    }).select('username password email').exec(function(err, user){
       if(err){
         return res.json(err);
       }
@@ -32,8 +32,9 @@ module.exports = {
           });
         }
         else{
+          console.log("hello");
           var token = jwt.sign({
-            username: user.username,
+            id: user._id,
             email: user.email
           }, superSecret, {
               expiresInMinutes: 1440
@@ -61,7 +62,7 @@ module.exports = {
         }
         else{
           req.user = user;
-          //console.log(req.decoded);
+          // res.json(user);
           next();
         }
       });
@@ -76,7 +77,7 @@ module.exports = {
     User.create(req.body, function(err, user){
       if(err){
         if(err.code ===  11000){
-          res.json({message: 'Username or Email already taken'})
+          res.json({message: 'Username or Email already taken'});
         }
         else{
           res.json({message : err.errors.email.message});
