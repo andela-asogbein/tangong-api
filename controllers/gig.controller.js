@@ -34,31 +34,7 @@ var addImage = function(req,res){
 }
 module.exports = {
 
-  addImage: function(req,res,next){
-    var form = new formidable.IncomingForm();
-      form.parse(req, function(err, fields, files) {
-        req.body = fields;
-
-        req.image = files.file.path;
-        console.log(req.image);
-        cloudinary.uploader.upload(req.image, function(result) { 
-          req.body.imageUrl = result.url;
-          next();
-        });
-      });
-  },
-  addGig: function(req, res){
-      req.body.addedBy = req.user.id;
-      var gig = new Gig(req.body)
-      gig.save(function(err, gig){
-        if(err){
-          console.log(err);
-          return res.json(err);
-        }
-        console.log("done");
-        res.status(201).json(gig);
-      });
-  },
+ 
 
   getGigs: function(req, res){
     Gig.find({}).populate('addedBy category').exec(function(err, gigs){
