@@ -26,7 +26,7 @@ var GigSchema = new Schema({
       type: Schema.ObjectId,
       ref: 'User'
     },
-    imageUrl: {
+    imageUrl:{
       type: String
     }
 }, {versionKey: false});

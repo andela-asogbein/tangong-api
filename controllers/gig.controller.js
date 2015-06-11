@@ -1,40 +1,51 @@
 'use strict';
 
 var mongoose = require('mongoose');
-
 var formidable = require('formidable');
-var util = require('util');
-var fs = require('fs-extra');
-var qt = require('quickthumb');
-var multer = require('multer');
 var cloudinary = require('cloudinary');
-
-cloudinary.config({
-  cloud_name: 'tangong',
-  api_key: '522545772253275',
-  api_secret: 'TqyViZd13MJkMYwAVKHRHweZhv0'
-});
+var util = require('util');
 
 
 require("../models/gig.model");
 require("../models/user.model");
+
+cloudinary.config({
+  cloud_name: 'neddinn',
+  api_key: '358555269189826',
+  api_secret: 'jJZiRszXOelRPoIIYeIayKwzZic'
+});
 
 var Gig = mongoose.model("Gig");
 var User = mongoose.model("User");
 
 var userController = require("./user.controller");
 
+
 module.exports = {
+  addImage: function(req,res,next){
+    var form = new formidable.IncomingForm();
+      form.parse(req, function(err, fields, files) {
+        req.body = fields;
+
+        req.image = files.file.path;
+        console.log(req.image);
+        cloudinary.uploader.upload(req.image, function(result) {
+          req.body.imageUrl = result.url;
+          next();
+        });
+      });
+  },
   addGig: function(req, res){
-    req.body.addedBy = req.user.id;
-    req.body.imageUrl = req.img;
-    var gig = new Gig(req.body);
-    gig.save(function(err, gig){
-      if(err){
-        return res.json(err);
-      }
-      res.status(201).json(gig);
-    });
+      req.body.addedBy = req.user.id;
+      var gig = new Gig(req.body)
+      gig.save(function(err, gig){
+        if(err){
+          console.log(err);
+          return res.json(err);
+        }
+        console.log("done");
+        res.status(201).json(gig);
+      });
   },
 
   getGigs: function(req, res){

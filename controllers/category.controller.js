@@ -15,7 +15,6 @@ module.exports = {
 		})
 	},
 	getAll: function(req,res){
-		console.log("here");
 		Category.find({}, function(err,result){
 			if(err){
 				return res.json(err);
