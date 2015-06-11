@@ -2,6 +2,20 @@
 
 var mongoose = require('mongoose');
 
+var formidable = require('formidable');
+var util = require('util');
+var fs = require('fs-extra');
+var qt = require('quickthumb');
+var multer = require('multer');
+var cloudinary = require('cloudinary');
+
+cloudinary.config({
+  cloud_name: 'tangong',
+  api_key: '522545772253275',
+  api_secret: 'TqyViZd13MJkMYwAVKHRHweZhv0'
+});
+
+
 require("../models/gig.model");
 require("../models/user.model");
 
@@ -11,10 +25,10 @@ var User = mongoose.model("User");
 var userController = require("./user.controller");
 
 module.exports = {
-
   addGig: function(req, res){
     req.body.addedBy = req.user.id;
-    var gig = new Gig(req.body)
+    req.body.imageUrl = req.img;
+    var gig = new Gig(req.body);
     gig.save(function(err, gig){
       if(err){
         return res.json(err);
@@ -85,5 +99,18 @@ module.exports = {
       }
       res.status(200).json(gigs);
     });
+  },
+
+  uploadImage: function(req, res, next){
+    if(req.files.file){
+      var path = req.files.file.path;
+      cloudinary.uploader.upload(path, function(response){
+        req.img = response.url;
+        next();
+      });
+    }
+    else{
+      next();
+    }
   }
 };

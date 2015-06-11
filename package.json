@@ -11,11 +11,15 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.12.4",
+    "cloudinary": "^1.2.1",
     "express": "^4.12.4",
+    "formidable": "^1.0.17",
     "jsonwebtoken": "^5.0.1",
     "mongoose": "^4.0.5",
     "morgan": "^1.5.3",
+    "multer": "^0.1.8",
     "passport": "^0.2.2",
-    "passport-facebook": "^2.0.0"
+    "passport-facebook": "^2.0.0",
+    "quickthumb": "0.0.11"
   }
 }
