@@ -16,4 +16,4 @@ module.exports = function(app){
 		.delete(category.removeOne)
 
 	app.use("/api",router);
-}
+};

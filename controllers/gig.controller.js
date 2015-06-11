@@ -5,13 +5,14 @@ var formidable = require('formidable');
 var cloudinary = require('cloudinary');
 var util = require('util');
 
+
 require("../models/gig.model");
 require("../models/user.model");
 
-cloudinary.config({ 
-  cloud_name: 'neddinn', 
-  api_key: '358555269189826', 
-  api_secret: 'jJZiRszXOelRPoIIYeIayKwzZic' 
+cloudinary.config({
+  cloud_name: 'neddinn',
+  api_key: '358555269189826',
+  api_secret: 'jJZiRszXOelRPoIIYeIayKwzZic'
 });
 
 var Gig = mongoose.model("Gig");
@@ -25,7 +26,7 @@ module.exports = {
       form.parse(req, function(err, fields, files) {
         req.body = fields;
         req.image = files.file.path;
-        cloudinary.uploader.upload(req.image, function(result) { 
+        cloudinary.uploader.upload(req.image, function(result) {
           req.body.imageUrl = result.url;
           next();
         });
@@ -104,5 +105,18 @@ module.exports = {
       }
       res.status(200).json(gigs);
     });
+  },
+
+  uploadImage: function(req, res, next){
+    if(req.files.file){
+      var path = req.files.file.path;
+      cloudinary.uploader.upload(path, function(response){
+        req.img = response.url;
+        next();
+      });
+    }
+    else{
+      next();
+    }
   }
 };

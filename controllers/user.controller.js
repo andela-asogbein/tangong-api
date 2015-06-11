@@ -11,7 +11,7 @@ var superSecret = 'tangoforme';
 
 
 module.exports = {
-  
+
   authenticateUser: function(req, res){
     User.findOne({
       username: req.body.username,
@@ -75,6 +75,7 @@ module.exports = {
 
   addUser: function(req, res){
     User.create(req.body, function(err, user){
+      console.log(req.body);
       if(err){
         if(err.code ===  11000){
           res.json({message: 'Username or Email already taken'});

@@ -6,9 +6,6 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
 
-// var passport = require('passport');
-// var passport = passport();
-
 
 //mongodb connection
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/tango_db');
