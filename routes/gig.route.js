@@ -9,8 +9,7 @@ var user = require('../controllers/user.controller');
 module.exports = function(app){
   gigRouter.route('/gigs/')
     .get(gig.getGigs)
-    // gig.addImage
-    .post(user.verifyToken,gig.addGig)
+    .post(user.verifyToken,gig.addImage,gig.addGig)
     .delete(user.verifyToken, gig.deleteAll);
 
   gigRouter.get('/gigs/search/gig', gig.searchGigs);
