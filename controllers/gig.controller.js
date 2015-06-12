@@ -1,19 +1,19 @@
 'use strict';
 
 var mongoose = require('mongoose');
-// var formidable = require('formidable');
-// var cloudinary = require('cloudinary');
-// var util = require('util');
+var formidable = require('formidable');
+var cloudinary = require('cloudinary');
+var util = require('util');
 
 
 require("../models/gig.model");
 require("../models/user.model");
 
-// cloudinary.config({
-//   cloud_name: 'neddinn',
-//   api_key: '358555269189826',
-//   api_secret: 'jJZiRszXOelRPoIIYeIayKwzZic'
-// });
+cloudinary.config({
+  cloud_name: 'neddinn',
+  api_key: '358555269189826',
+  api_secret: 'jJZiRszXOelRPoIIYeIayKwzZic'
+});
 
 var Gig = mongoose.model("Gig");
 var User = mongoose.model("User");
