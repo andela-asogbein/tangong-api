@@ -21,19 +21,19 @@ var User = mongoose.model("User");
 var userController = require("./user.controller");
 
 module.exports = {
-  // addImage: function(req,res,next){
-  //   var form = new formidable.IncomingForm();
-  //     form.parse(req, function(err, fields, files) {
-  //       req.body = fields;
-  //       req.image = files.file.path;
-  //       cloudinary.uploader.upload(req.image, function(result) {
-  //         req.body.imageUrl = result.url;
-  //         next();
-  //       });
-  //     });
-  // },
+  addImage: function(req,res,next){
+    var form = new formidable.IncomingForm();
+      form.parse(req, function(err, fields, files) {
+        req.body = fields;
+        req.image = files.file.path;
+        cloudinary.uploader.upload(req.image, function(result) {
+          req.body.imageUrl = result.url;
+          next();
+        });
+      });
+  },
   addGig: function(req, res){
-      // req.body.addedBy = req.user.id;
+      req.body.addedBy = req.user.id;
       var gig = new Gig(req.body)
       gig.save(function(err, gig){
         if(err){
