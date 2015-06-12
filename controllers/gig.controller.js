@@ -10,9 +10,9 @@ require("../models/gig.model");
 require("../models/user.model");
 
 cloudinary.config({
-  cloud_name: 'neddinn',
-  api_key: '358555269189826',
-  api_secret: 'jJZiRszXOelRPoIIYeIayKwzZic'
+  cloud_name: 'hm8q3fosc',
+  api_key: '735282472799985',
+  api_secret: 'Aad4AzcpBhl6ej-qkDLL7T4jMts'
 });
 
 var Gig = mongoose.model("Gig");
