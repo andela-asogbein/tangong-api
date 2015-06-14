@@ -53,7 +53,7 @@ module.exports = {
   },
 
   getOneGig: function(req, res){
-    Gig.findById({_id: req.params.gig_id}, function(err, gig){
+    Gig.findById({_id: req.params.gig_id}).populate('addedBy category').exec(function(err, gig){
       if(err){
         return res.json(err);
       }

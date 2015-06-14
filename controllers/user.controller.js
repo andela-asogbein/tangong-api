@@ -35,6 +35,7 @@ module.exports = {
           console.log("hello");
           var token = jwt.sign({
             id: user._id,
+            username: user.username,
             email: user.email
           }, superSecret, {
               expiresInMinutes: 1440
@@ -73,9 +74,8 @@ module.exports = {
     }
   },
 
-  addUser: function(req, res){
+  addUser2: function(req, res){
     User.create(req.body, function(err, user){
-      console.log(req.body);
       if(err){
         if(err.code ===  11000){
           res.json({message: 'Username or Email already taken'});
@@ -87,6 +87,16 @@ module.exports = {
       }
       res.status(201).json(user.username);
     });
+  },
+
+    addUser: function(req, res){
+      var user = new User(req.body);
+      user.save(function(err, user){
+        if(err){
+          return res.json(err);
+        }
+        res.status(201).json(user);
+      });
   },
 
   getUsers: function(req, res){
@@ -132,5 +142,14 @@ module.exports = {
       }
       res.status(200).json(user);
     });
-  }
+  },
+
+  deleteAllUsers: function(req, res){
+    User.remove({}, function(err, users){
+      if(err){
+        return res.json(err);
+      }
+      res.status(200).json(users);
+    });
+  },
 };
