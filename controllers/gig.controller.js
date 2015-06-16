@@ -34,7 +34,7 @@ module.exports = {
   },
   addGig: function(req, res){
       req.body.addedBy = req.user.id;
-      var gig = new Gig(req.body)
+      var gig = new Gig(req.body);
       gig.save(function(err, gig){
         if(err){
           return res.json(err);
@@ -100,6 +100,17 @@ module.exports = {
   searchCategories: function(req, res){
     var categoryExpression = new RegExp(req.query.category, 'ig');
     Gig.find({category: categoryExpression}, function(err, gigs){
+      if(err){
+        return res.json(err);
+      }
+      res.status(200).json(gigs);
+    });
+  },
+
+  searchUsers: function(req, res){
+    // var userExpression = new RegExp(req.query.user, 'i');
+    var user_id = req.user_id;
+    Gig.find({addedBy: user_id}, function(err, gigs){
       if(err){
         return res.json(err);
       }

@@ -14,11 +14,11 @@ module.exports = function(app){
 
   gigRouter.get('/gigs/search/gig', gig.searchGigs);
   gigRouter.get('/gigs/search/category', gig.searchGigs);
+  gigRouter.get('/gigs/search/user/:username', user.getUserById, gig.searchUsers);
 
   gigRouter.route('/gig/:gig_id')
     .get(gig.getOneGig)
     .put(user.verifyToken, gig.updateGig)
     .delete(user.verifyToken, gig.deleteGig);
-
   app.use('/api', gigRouter);
 };

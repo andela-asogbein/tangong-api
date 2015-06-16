@@ -73,7 +73,18 @@ module.exports = {
       });
     }
   },
-
+  getUserById:function(req,res,next){
+    User.findOne({username: req.params.username}, function(err,user){
+      if(err){
+        return res.json(err);
+      }
+      if(!user){
+        return res.json("User doesnt exist");
+      }
+      req.user_id = user._id;
+      next();
+    });
+  },
   addUser2: function(req, res){
     User.create(req.body, function(err, user){
       if(err){
