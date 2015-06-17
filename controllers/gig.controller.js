@@ -110,7 +110,7 @@ module.exports = {
   searchUsers: function(req, res){
     // var userExpression = new RegExp(req.query.user, 'i');
     var user_id = req.user_id;
-    Gig.find({addedBy: user_id}, function(err, gigs){
+    Gig.find({addedBy: user_id}).populate('addedBy category').exec(function(err, gigs){
       if(err){
         return res.json(err);
       }
