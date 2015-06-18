@@ -64,10 +64,10 @@ module.exports = {
   },
 
   updateGig: function(req, res){
-    // console.log(req.body);
-    // return;
-    Gig.update({_id: req.params.gig_id}, req.body, function(err, gig){
+    req.body.addedBy = req.user.id;
+    Gig.update({_id: req.body._id}, req.body, function(err, gig){
       if(err){
+        console.log(err);
         return res.json(err);
       }
       res.status(201).json(gig);
