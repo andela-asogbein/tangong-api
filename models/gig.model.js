@@ -28,6 +28,10 @@ var GigSchema = new Schema({
     },
     imageUrl:{
       type: String
+    },
+    dateAdded:{
+      type:Date,
+      default:Date.now()
     }
 }, {versionKey: false});
 

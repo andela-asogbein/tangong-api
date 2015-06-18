@@ -18,7 +18,7 @@ module.exports = function(app){
 
   gigRouter.route('/gig/:gig_id')
     .get(gig.getOneGig)
-    .put(user.verifyToken, gig.updateGig)
+    .put(user.verifyToken,gig.addImage,gig.updateGig)
     .delete(user.verifyToken, gig.deleteGig);
   app.use('/api', gigRouter);
 };
