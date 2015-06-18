@@ -3,8 +3,6 @@
 var mongoose = require('mongoose');
 var formidable = require('formidable');
 var cloudinary = require('cloudinary');
-var util = require('util');
-
 
 require("../models/gig.model");
 require("../models/user.model");
@@ -25,6 +23,10 @@ module.exports = {
     var form = new formidable.IncomingForm();
       form.parse(req, function(err, fields, files) {
         req.body = fields;
+        if(!files.hasOwnProperty('file')){
+          next();
+          return;
+        }
         req.image = files.file.path;
         cloudinary.uploader.upload(req.image, function(result) {
           req.body.imageUrl = result.url;
@@ -62,6 +64,8 @@ module.exports = {
   },
 
   updateGig: function(req, res){
+    // console.log(req.body);
+    // return;
     Gig.update({_id: req.params.gig_id}, req.body, function(err, gig){
       if(err){
         return res.json(err);
