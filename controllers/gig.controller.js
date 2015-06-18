@@ -46,7 +46,7 @@ module.exports = {
   },
 
   getGigs: function(req, res) {
-    Gig.find({}).populate('addedBy category').sort("dateAdded").exec(function(err, gigs) {
+    Gig.find({}).populate('addedBy category').sort("-dateAdded").exec(function(err, gigs) {
       if (err) {
         return res.json(err);
       }
