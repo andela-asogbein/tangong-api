@@ -13,7 +13,7 @@ module.exports = function(app){
     .delete(user.verifyToken, gig.deleteAll);
 
   gigRouter.get('/gigs/search/gig', gig.searchGigs);
-  gigRouter.get('/gigs/search/category', gig.searchGigs);
+  gigRouter.get('/gigs/search/category/:category_id', gig.searchCategories);
   gigRouter.get('/gigs/search/user/:username', user.getUserById, gig.searchUsers);
 
   gigRouter.route('/gig/:gig_id')
