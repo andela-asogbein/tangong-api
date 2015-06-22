@@ -32,6 +32,9 @@ var GigSchema = new Schema({
     dateAdded:{
       type:Date,
       default:Date.now()
+    },
+    address:{
+      type: String
     }
 }, {versionKey: false});
 

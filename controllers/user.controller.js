@@ -14,6 +14,7 @@ var superSecret = 'tangoforme';
 module.exports = {
 
   authenticateUser: function(req, res) {
+    console.log(4)
     User.findOne({
       username: req.body.username,
     }).select('username password email').exec(function(err, user) {
@@ -36,7 +37,7 @@ module.exports = {
             username: user.username,
             email: user.email
           }, superSecret, {
-            expiresInMinutes: 1440
+            expiresInMinutes: 43200
           }); //end var token
           res.json({
             success: true,

@@ -20,7 +20,6 @@ module.exports = {
         console.log(error);
         return;
       }
-      console.log(response);
-    })
+    });
   }
-}
+};
