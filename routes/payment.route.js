@@ -1,13 +1,13 @@
 'use strict';
 
 var express = require('express');
-var gigRouter = express.Router();
+var payRouter = express.Router();
 
-var gig = require('../controllers/gig.controller');
+// var gig = require('../controllers/gig.controller');
 var payment = require('../controllers/payment.controller');
 
 module.exports = function(app) {
-  gigRouter.route('/payment/')
+  payRouter.route('/payment')
     .post(payment.checkNotification)
-  app.use('/api', gigRouter);
+  app.use('/api', payRouter);
 };
