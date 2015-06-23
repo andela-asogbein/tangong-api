@@ -25,7 +25,7 @@ module.exports = {
       return connection;
     });
   },
-  addFromRoute: function(req,res) {
+  addFromRoute: function(req, res) {
     var connection = new Connections(req.body);
     connection.save(function(err, connection) {
       if (err) {
@@ -35,12 +35,14 @@ module.exports = {
     });
   },
   getAll: function(req, res) {
-    Connections.find({}, function(err, result) {
-      if (err) {
-        return res.json(err);
-      }
-      res.json(result);
-    })
+    Connections.find({})
+      .populate("requester provider gig")
+      .exec(function(err, result) {
+        if (err) {
+          return res.json(err);
+        }
+        res.json(result);
+      })
   },
   remove: function(req, res) {
     Connections.remove({
@@ -64,7 +66,7 @@ module.exports = {
         if (err) {
           return res.json(err);
         }
-        res.json(result);
+        res.json(req.params);
       })
   },
   getByConnection: function(req, res) {

@@ -12,9 +12,9 @@ module.exports = function(app) {
     .post(connections.addFromRoute)
   connRouter.route('/connection/user/:id')
     .get(connections.getByUser)
-    .delete(connections.remove)
   connRouter.route('/connection/:id')
     .get(connections.getByConnection)
+    .delete(connections.remove)
 
   app.use('/api', connRouter);
 };
