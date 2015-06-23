@@ -48,13 +48,12 @@ module.exports = {
           from: "Tango Nigeria ✔ <no-reply@tangong.com>",
           to: provider_email,
           subject: "Tango Nigeria",
-          html: "<b>" + message + "</b>"
+          html: "<b>" + message + info + "</b>"
         }
         transporter.sendMail(mailOptions, function(error, response) {
           if (error) {
             console.log(error);
           }
-          console.log(response);
           connectionController.add(info)
           setTimeout(res.redirect(body.referrer + "#!/gig/" + info.gig), 3000);
         })

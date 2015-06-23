@@ -19,10 +19,6 @@ var ConnectionSchema = new Schema({
     },
     transaction_id: {
       type: String
-    },
-    date_added: {
-      type: Date,
-      default: Date.now()
     }
 }, {versionKey: false});
 
