@@ -66,7 +66,7 @@ module.exports = {
         if (err) {
           return res.json(err);
         }
-        res.json(req.params);
+        res.json(result);
       })
   },
   getByConnection: function(req, res) {
