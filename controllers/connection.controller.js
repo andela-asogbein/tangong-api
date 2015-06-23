@@ -55,13 +55,7 @@ module.exports = {
     })
   },
   getByUser: function(req, res) {
-    Connections.find({
-        // $or: [{
-        //   provider: req.params.id,
-        //   requester: req.params.id
-        // }]
-        {$or: [{requester: req.params.id, provider:req.params.id}]}
-      })
+    Connections.find({$or: [{requester: req.params.id, provider:req.params.id}]})
       .populate("requester provider gig")
       .exec(function(err, result) {
         if (err) {
