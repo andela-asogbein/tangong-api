@@ -60,7 +60,7 @@ module.exports = {
         //   provider: req.params.id,
         //   requester: req.params.id
         // }]
-        requester: req.params.id
+        {$or: [{requester: req.params.id, provider:req.params.id}]}
       })
       .populate("requester provider gig")
       .exec(function(err, result) {
