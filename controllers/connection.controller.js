@@ -17,7 +17,7 @@ module.exports = {
     var connection = new Connections(body);
     connection.save(function(err, connection) {
       if (err) {
-        console.log(5,err)
+        console.log(5, err)
         return err;
       }
       console.log("saved");
@@ -25,30 +25,49 @@ module.exports = {
       return connection;
     });
   },
-  getAll: function(req,res){
-    Connections.find({}, function(err,result){
-      if(err){
+  getAll: function(req, res) {
+    Connections.find({}, function(err, result) {
+      if (err) {
         return res.json(err);
       }
       res.json(result);
     })
   },
-  remove: function(req,res){
-    Connections.remove({_id:req.params.id}, function(err,result){
-      if(err){
+  remove: function(req, res) {
+    Connections.remove({
+      _id: req.params.id
+    }, function(err, result) {
+      if (err) {
         return res.json(err);
       }
       res.json(result);
     })
   },
-  getByUser: function(req,res){
-    Connections.find({$or : [{provider:req.params.id,requester:req.params.id}]})
+  getByUser: function(req, res) {
+    Connections.find({
+        $or: [{
+          provider: req.params.id,
+          requester: req.params.id
+        }]
+      })
       .populate("requester provider gig")
-      .exec(function(err,result){
-      if(err){
-        return res.json(err);
-      }
-      res.json(result);
-    })
+      .exec(function(err, result) {
+        if (err) {
+          return res.json(err);
+        }
+        res.json(result);
+      })
+  },
+  getByConnection: function(req, res) {
+    Connections.findOne({
+        _id: req.params.id
+      })
+      .populate("requester provider gig")
+      .exec(function(err, result) {
+        if (err) {
+          return res.json(err);
+        }
+        res.json(result);
+      })
   }
 };
