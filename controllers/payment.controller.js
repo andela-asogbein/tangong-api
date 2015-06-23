@@ -48,14 +48,14 @@ module.exports = {
           from: "Tango Nigeria ✔ <no-reply@tangong.com>",
           to: provider_email,
           subject: "Tango Nigeria",
-          html: "<b>" + message + info + "</b>"
+          html: "<b>" + message + "</b>"
         }
         transporter.sendMail(mailOptions, function(error, response) {
           if (error) {
             console.log(error);
           }
           connectionController.add(info)
-          setTimeout(res.redirect(body.referrer + "#!/gig/" + info.gig), 3000);
+          setTimeout(res.redirect(body.referrer + "#!/gig/" + info.gig), 9000);
         })
       }
     });
