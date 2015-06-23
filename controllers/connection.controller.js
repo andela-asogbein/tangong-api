@@ -56,10 +56,11 @@ module.exports = {
   },
   getByUser: function(req, res) {
     Connections.find({
-        $or: [{
-          provider: req.params.id,
-          requester: req.params.id
-        }]
+        // $or: [{
+        //   provider: req.params.id,
+        //   requester: req.params.id
+        // }]
+        requester: req.params.id
       })
       .populate("requester provider gig")
       .exec(function(err, result) {
