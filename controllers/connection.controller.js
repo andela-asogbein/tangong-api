@@ -25,6 +25,15 @@ module.exports = {
       return connection;
     });
   },
+  addFromRoute: function(req,res) {
+    var connection = new Connections(req.body);
+    connection.save(function(err, connection) {
+      if (err) {
+        return err;
+      }
+      res.json(connection);
+    });
+  },
   getAll: function(req, res) {
     Connections.find({}, function(err, result) {
       if (err) {

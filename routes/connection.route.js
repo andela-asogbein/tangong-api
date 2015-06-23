@@ -9,7 +9,7 @@ var connections = require('../controllers/connection.controller');
 module.exports = function(app) {
   connRouter.route('/connections')
     .get(connections.getAll)
-    .post(connections.add)
+    .post(connections.addFromRoute)
   connRouter.route('/connection/user/:id')
     .get(connections.getByUser)
     .delete(connections.remove)
