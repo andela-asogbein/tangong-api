@@ -11,6 +11,7 @@ module.exports = function(app) {
     .get(connections.getAll)
     .post(connections.add)
   connRouter.route('/connection/:id')
+    .get(connections.getByUser)
     .delete(connections.remove)
   app.use('/api', connRouter);
 };

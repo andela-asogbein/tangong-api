@@ -40,5 +40,15 @@ module.exports = {
       }
       res.json(result);
     })
+  },
+  getByUser: function(req,res){
+    Connections.find({$or : [{provider:req.params.id,requester:req.params.id}]})
+      .populate("requester provider gig")
+      .exec(function(err,result){
+      if(err){
+        return res.json(err);
+      }
+      res.json(result);
+    })
   }
 };
