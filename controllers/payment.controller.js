@@ -55,7 +55,7 @@ module.exports = {
             console.log(error);
           }
           connectionController.add(info)
-          setTimeout(res.redirect(body.referrer + "#!/gig/" + info.gig), 9000);
+          setTimeout(res.redirect(body.referrer + "#!/gig/" + info.gig), 3000);
         })
       }
     });
