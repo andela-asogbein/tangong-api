@@ -2,7 +2,7 @@
 
 var nodemailer = require("nodemailer");
 
-var transporter = nodemailer.createTransport("SMTP");
+var transporter = nodemailer.createTransport();
 
 module.exports = {
   sendMail: function(recipient, subject, message) {

@@ -27,5 +27,7 @@ app.use(function(req, res, next) {
 require('./routes/user.route')(app);
 require('./routes/gig.route')(app);
 require('./routes/category.route')(app);
+require('./routes/payment.route')(app);
+require('./routes/connection.route')(app);
 
 module.exports = app;
