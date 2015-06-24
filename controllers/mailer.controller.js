@@ -1,6 +1,5 @@
 'use strict';
 
-
 var nodemailer = require("nodemailer");
 
 var transporter = nodemailer.createTransport("SMTP");
@@ -13,7 +12,7 @@ module.exports = {
       subject: subject,
       // text: "Hello world ✔",
       html: "<b>" + message + "</b>"
-    }
+    };
 
     transporter.sendMail(mailOptions, function(error, response) {
       if (error) {

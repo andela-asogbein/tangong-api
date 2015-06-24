@@ -83,12 +83,27 @@ module.exports = {
         return res.json(err);
       }
       if (!user) {
-        return res.json("User doesnt exist");
+        return res.json("User doesn't exist");
       }
       req.user_id = user._id;
       next();
     });
   },
+
+  getUserByEmail: function(req, res){
+    User.findOne({
+      email: req.params.email
+    }, function(err, user){
+      if(err){
+        return res.json(err);
+      }
+      if(!user){
+        return res.json("User doesn't exist");
+      }
+      res.status(200).json(user)
+    });
+  },
+
   addUser2: function(req, res) {
     User.create(req.body, function(err, user) {
       if (err) {

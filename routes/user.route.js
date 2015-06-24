@@ -26,7 +26,8 @@ module.exports = function(app){
     res.send(req.user);
   });
 
-  userRouter.get('/user/username/:username',user.getByUsername);
+  userRouter.get('/user/username/:username', user.getByUsername);
+  userRouter.get('/user/email/:email', user.getUserByEmail);
 
   app.use('/api', userRouter);
 };
