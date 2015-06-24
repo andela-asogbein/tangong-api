@@ -3,7 +3,11 @@
 //database
 var mongoose = require('mongoose');
 require("../models/user.model");
+require("../models/gig.model");
+
 var User = mongoose.model('User');
+var Gig = mongoose.model("Gig");
+
 var mailer = require("./mailer.controller.js");
 
 //authentication
@@ -163,7 +167,16 @@ module.exports = {
       if (err) {
         return res.json(err);
       }
-      res.status(200).json(user);
+      else {
+        Gig.remove({
+          addedBy: req.params.user_id
+        }, function(err, gig) {
+          if (err) {
+            return res.json(err);
+          }
+          res.status(200).json(gig);
+        });
+      }
     });
   },
 
