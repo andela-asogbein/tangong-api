@@ -5,6 +5,10 @@ var mongoose = require('mongoose');
 require("../models/user.model");
 require("../models/gig.model");
 
+var async = require('async');
+var crypto = require('crypto');
+var nodemailer = require('nodemailer');
+
 var User = mongoose.model('User');
 var Gig = mongoose.model("Gig");
 
@@ -90,17 +94,17 @@ module.exports = {
     });
   },
 
-  getUserByEmail: function(req, res){
+  getUserByEmail: function(req, res) {
     User.findOne({
       email: req.params.email
-    }, function(err, user){
-      if(err){
+    }, function(err, user) {
+      if (err) {
         return res.json(err);
       }
-      if(!user){
+      if (!user) {
         return res.json("User doesn't exist");
       }
-      res.status(200).json(user)
+      res.status(200).json(user);
     });
   },
 
@@ -181,8 +185,7 @@ module.exports = {
     }, function(err, user) {
       if (err) {
         return res.json(err);
-      }
-      else {
+      } else {
         Gig.remove({
           addedBy: req.params.user_id
         }, function(err, gig) {
@@ -203,4 +206,90 @@ module.exports = {
       res.status(200).json(users);
     });
   },
+
+  forgot: function(req, res, next) {
+
+    async.waterfall([
+      function(done) {
+        crypto.randomBytes(20, function(err, buf) {
+          var token = buf.toString('hex');
+          done(err, token);
+        });
+      },
+      function(token, done) {
+        User.findOne({
+          email: req.body.email
+        }, function(err, user) {
+          if (!user) {
+            return res.json({
+              message: 'No user found'
+            });
+          }
+
+          user.resetPasswordToken = token;
+          user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+          user.save(function(err) {
+            done(err, token, user);
+          });
+        });
+      },
+      function(token, user, done) {
+        var transporter = nodemailer.createTransport();
+        var mailOptions = {
+          to: user.email,
+          from: 'Tango Nigeria ✔ <no-reply@tangong.com>',
+          subject: 'Tango Password Reset',
+          text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+            'Please click on the following link, or paste this into your browser to complete the process:\n\n'+ '\n\n' + 'http://localhost:3000/#!/reset/password/' + token + '\n\n'+
+            ' If you did not request this, please ignore this email and your password will remain unchanged.\n'
+        };
+        transporter.sendMail(mailOptions, function(err, res) {
+          //console.log(res);
+          done(err, 'done');
+          return res;
+        });
+      }
+    ], function(err) {
+      if (err) return next(err);
+      res.json({
+        message: 'Message Sent!'
+      });
+    });
+  },
+
+  reset: function(req, res) {
+    async.waterfall([
+      function(done) {
+        User.findOne({
+          resetPasswordToken: req.params.token,
+          resetPasswordExpires: {
+            $gt: Date.now()
+          }
+        }, function(err, user) {
+          console.log('user', user)
+          if (!user) {
+            return res.json({
+              'message': 'User does not exist'
+            });
+          }
+
+          user.password = req.body.password;
+          user.resetPasswordToken = undefined;
+          user.resetPasswordExpires = undefined;
+
+          user.save(function(err, res) {
+            if (err) {
+              return res.json(err);
+            }
+          });
+        });
+      }
+    ], function(err) {
+      if (err) return err;
+      res.json({
+        message: 'Password changed!'
+      });
+    });
+  }
 };

@@ -6,11 +6,19 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
 
+// var cookieParser = require('cookie-parser');
+
+// //for auth
+// var nodemailer = require('nodemailer');
+
+// var bcrypt = require('bcrypt-nodejs');
+// var async = require('async');
+// var crypto = require('crypto');
 
 //mongodb connection
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/tango_db');
 
-
+// app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan("dev"));
