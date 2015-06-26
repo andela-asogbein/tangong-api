@@ -267,7 +267,7 @@ module.exports = {
             $gt: Date.now()
           }
         }, function(err, user) {
-          console.log('user', user)
+          console.log('user', user);
           if (!user) {
             return res.json({
               'message': 'User does not exist'
@@ -278,10 +278,12 @@ module.exports = {
           user.resetPasswordToken = undefined;
           user.resetPasswordExpires = undefined;
 
-          user.save(function(err, res) {
+          user.save(function(err, result) {
             if (err) {
               return res.json(err);
             }
+            console.log(result);
+            res.json(result);
           });
         });
       }

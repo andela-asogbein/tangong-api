@@ -14,19 +14,6 @@ module.exports = function(app) {
   userRouter.post('/authenticate', user.authenticateUser);
   userRouter.post('/reset/:token', user.reset);
 
-  // userRouter.post('/login', function(req, res, next) {
-  //   passport.authenticate('local', function(err, user, info) {
-  //     if (err) return next(err)
-  //     if (!user) {
-  //       return res.redirect('/login')
-  //     }
-  //     req.logIn(user, function(err) {
-  //       if (err) return next(err);
-  //       return res.redirect('/');
-  //     });
-  //   })(req, res, next);
-  // });
-
   userRouter.route('/users')
     .get(user.getUsers)
     .post(user.addUser)
