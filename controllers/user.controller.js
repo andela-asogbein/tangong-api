@@ -241,7 +241,7 @@ module.exports = {
           from: 'Tango Nigeria ✔ <no-reply@tangong.com>',
           subject: 'Tango Password Reset',
           text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-            'Please click on the following link, or paste this into your browser to complete the process:\n\n'+ '\n\n' + 'http://localhost:3000/#!/reset/password/' + token + '\n\n'+
+            'Please click on the following link, or paste this into your browser to complete the process:\n\n'+ '\n\n' + 'http://andela-ssunday.github.io/tangong/#!/reset/password/' + token + '\n\n'+
             ' If you did not request this, please ignore this email and your password will remain unchanged.\n'
         };
         transporter.sendMail(mailOptions, function(err, res) {
