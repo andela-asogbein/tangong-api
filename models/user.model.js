@@ -10,7 +10,9 @@ var UserSchema = new Schema({
   username: {
     type: String,
     required: 'Enter valid username',
-    index: {unique: true}
+    index: {
+      unique: true
+    }
   },
   password: {
     type: String,
@@ -20,29 +22,36 @@ var UserSchema = new Schema({
   email: {
     type: String,
     required: 'Enter email',
-    index: {unique: true}
+    index: {
+      unique: true
+    }
   }
-}, {versionKey: false});
+}, {
+  versionKey: false
+});
 
-UserSchema.pre('save', function(next){
+UserSchema.pre('save', function(next) {
   var user = this;
-  if(user.isModified){
-    bcrypt.hash(user.password, null, null, function(err, hash){
-      if(err){
+  if (user.isModified) {
+    console.log("here");
+    bcrypt.hash(user.password, null, null, function(err, hash) {
+      if (err) {
+        console.log("pass", user, password);
         return next(err);
       }
+      console.log("hash", hash);
       user.password = hash;
       next();
     });
-  }
-  else{
+  } else {
     return next();
   }
 });
 
-UserSchema.methods.comparePassword = function(password){
+UserSchema.methods.comparePassword = function(password) {
   var user = this;
   return bcrypt.compareSync(password, user.password);
+  // return true
 };
 
 mongoose.model('User', UserSchema);

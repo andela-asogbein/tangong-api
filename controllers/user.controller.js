@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 require("../models/user.model");
 var User = mongoose.model('User');
 var mailer = require("./mailer.controller.js");
+var bcrypt = require('bcrypt-nodejs');
 
 //authentication
 var jwt = require('jsonwebtoken');
@@ -14,7 +15,6 @@ var superSecret = 'tangoforme';
 module.exports = {
 
   authenticateUser: function(req, res) {
-    console.log(4)
     User.findOne({
       username: req.body.username,
     }).select('username password email').exec(function(err, user) {
@@ -31,7 +31,6 @@ module.exports = {
             message: 'Wrong password'
           });
         } else {
-          console.log("hello");
           var token = jwt.sign({
             id: user._id,
             username: user.username,
@@ -146,13 +145,25 @@ module.exports = {
   },
 
   updateUser: function(req, res) {
-    User.update({
-      _id: req.params.user_id
-    }, req.body, function(err, user) {
-      if (err) {
-        return res.json(err);
-      }
-      res.status(201).json(user);
+    bcrypt.hash(req.body.password, null, null, function(err, hash) {
+      req.body.password = hash;
+      User.update({
+        _id: req.params.user_id
+      }, req.body, function(err, user) {
+        if (err) {
+          return res.json(err);
+        }
+        var token = jwt.sign({
+          id: req.body._id,
+          username: req.body.username,
+          email: req.body.email
+        }, superSecret, {
+          expiresInMinutes: 43200
+        });
+        res.status(201).json({
+          token: token
+        });
+      });
     });
   },
 
