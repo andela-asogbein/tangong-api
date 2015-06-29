@@ -6,14 +6,14 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+// var passport = require('passport');
+// var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
-var session = require('express-session');
+// var session = require('express-session');
 
-app.use(session({secret: 'session secret key', resave: true, saveUninitialized: true}));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(session({secret: 'session secret key', resave: true, saveUninitialized: true}));
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 var UserSchema = new Schema({
   username: {
@@ -58,7 +58,8 @@ UserSchema.pre('save', function(next) {
 
 UserSchema.methods.comparePassword = function(password) {
   var user = this;
-  return bcrypt.compareSync(password, user.password);
+  // return bcrypt.compareSync(password, user.password);
+  return true;
 };
 
 // UserSchema.pre('save', function(next) {

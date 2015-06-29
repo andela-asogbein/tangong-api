@@ -13,6 +13,7 @@ var User = mongoose.model('User');
 var Gig = mongoose.model("Gig");
 
 var mailer = require("./mailer.controller.js");
+var bcrypt = require('bcrypt-nodejs');
 
 //authentication
 var jwt = require('jsonwebtoken');
@@ -22,7 +23,6 @@ var superSecret = 'tangoforme';
 module.exports = {
 
   authenticateUser: function(req, res) {
-    console.log(4)
     User.findOne({
       username: req.body.username,
     }).select('username password email').exec(function(err, user) {
@@ -39,7 +39,6 @@ module.exports = {
             message: 'Wrong password'
           });
         } else {
-          console.log("hello");
           var token = jwt.sign({
             id: user._id,
             username: user.username,
@@ -169,14 +168,49 @@ module.exports = {
   },
 
   updateUser: function(req, res) {
-    User.update({
-      _id: req.params.user_id
-    }, req.body, function(err, user) {
+
+    User.findById(req.params.user_id, function(err, user) {
       if (err) {
         return res.json(err);
       }
-      res.status(201).json(user);
-    });
+      user.username = req.body.username;
+      user.password = req.body.password;
+      user.save(function(err, result) {
+        if(err){
+          return res.json(err);
+        }
+        var token = jwt.sign({
+          id: result._id,
+          username: result.username,
+          email: result.email
+        }, superSecret, {
+          expiresInMinutes: 43200
+        });
+        res.status(201).json({
+          token: token
+        });
+      })
+    })
+    // bcrypt.hash(req.body.password, null, null, function(err, hash) {
+    //   req.body.password = hash;
+    //   User.update({
+    //     _id: req.params.user_id
+    //   }, req.body, function(err, user) {
+    //     if (err) {
+    //       return res.json(err);
+    //     }
+    //     var token = jwt.sign({
+    //       id: req.body._id,
+    //       username: req.body.username,
+    //       email: req.body.email
+    //     }, superSecret, {
+    //       expiresInMinutes: 43200
+    //     });
+    //     res.status(201).json({
+    //       token: token
+    //     });
+    //   });
+    // });
   },
 
   deleteUser: function(req, res) {
@@ -241,11 +275,10 @@ module.exports = {
           from: 'Tango Nigeria ✔ <no-reply@tangong.com>',
           subject: 'Tango Password Reset',
           text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-            'Please click on the following link, or paste this into your browser to complete the process:\n\n'+ '\n\n' + 'http://andela-ssunday.github.io/tangong/#!/reset/password/' + token + '\n\n'+
+            'Please click on the following link, or paste this into your browser to complete the process:\n\n' + '\n\n' + 'http://andela-ssunday.github.io/tangong/#!/reset/password/' + token + '\n\n' +
             ' If you did not request this, please ignore this email and your password will remain unchanged.\n'
         };
         transporter.sendMail(mailOptions, function(err, res) {
-          //console.log(res);
           done(err, 'done');
           return res;
         });
@@ -267,7 +300,6 @@ module.exports = {
             $gt: Date.now()
           }
         }, function(err, user) {
-          console.log('user', user);
           if (!user) {
             return res.json({
               'message': 'User does not exist'
