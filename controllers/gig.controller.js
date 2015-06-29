@@ -54,6 +54,26 @@ module.exports = {
     });
   },
 
+    getRandomGigs: function(req, res) {
+    Gig.find({}).populate('addedBy category').sort("-dateAdded").exec(function(err, gigs) {
+      if (err) {
+        return res.json(err);
+      }
+      var arr = gigs;
+      var n = arr.length;
+      var tempArr = [];
+
+      for(var i = 0; i<n-1; i++){
+        tempArr.push(arr.splice(Math.floor(Math.random()*arr.length), 1)[0]);
+      }
+      tempArr.push(arr[0]);
+      arr = tempArr;
+      res.status(200).json(arr);
+    });
+  },
+
+
+
   getOneGig: function(req, res) {
     Gig.findById({
       _id: req.params.gig_id

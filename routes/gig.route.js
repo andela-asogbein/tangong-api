@@ -12,6 +12,8 @@ module.exports = function(app){
     .post(user.verifyToken,gig.addImage,gig.addGig)
     .delete(user.verifyToken, gig.deleteAll);
 
+  gigRouter.get('/randomGigs', gig.getRandomGigs);
+
   gigRouter.get('/gigs/search/gig', gig.searchGigs);
   gigRouter.get('/gigs/search/category/:category_id', gig.searchCategories);
   gigRouter.get('/gigs/search/user/:username', user.getUserById, gig.searchUsers);
