@@ -1,11 +1,7 @@
-'use strict';
-var mongoose = require("mongoose");
-require("../models/category.model");
+import mongoose from 'mongoose';
+import Category from "../models/category.model"
 
-var Category = mongoose.model("Category");
-
-module.exports = {
-
+export default {
 	create: function(req,res){
 		Category.create(req.body,function(err,result){
 			if(err){
@@ -31,8 +27,6 @@ module.exports = {
 		})
 	},
 	update: function(req,res){
-		console.log(1,req.params);
-		console.log(1,req.body);
 		Category.update({_id:req.params.id}, req.body, function(err,result){
 			if(err){
 				return res.json(err);

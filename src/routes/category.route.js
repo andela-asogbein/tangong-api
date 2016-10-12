@@ -1,11 +1,9 @@
-'use strict';
+import express from 'express';
+import category from "../controllers/category.controller.js";
 
-var express = require("express");
-var router = express.Router();
-var category = require("../controllers/category.controller.js");
+let router = express.Router();
 
-
-module.exports = function(app){
+let categoryRoutes = app => {
 	router.route("/categories")
 		.get(category.getAll)
 		.post(category.create)
@@ -17,3 +15,5 @@ module.exports = function(app){
 
 	app.use("/api",router);
 };
+
+export default categoryRoutes;

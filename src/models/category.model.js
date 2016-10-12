@@ -1,10 +1,8 @@
-'use strict';
+import mongoose from 'mongoose';
 
-var mongoose = require("mongoose");
+let Schema = mongoose.Schema;
 
-var Schema = mongoose.Schema;
-
-var categorySchema = new Schema({
+let categorySchema = new Schema({
 	name : {
 		type : 'String',
 		required : 'Category name is required'
@@ -17,4 +15,4 @@ var categorySchema = new Schema({
 	}
 });
 
-mongoose.model("Category",categorySchema);
+export default mongoose.model("Category", categorySchema);
