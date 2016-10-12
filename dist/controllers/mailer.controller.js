@@ -1,0 +1,25 @@
+'use strict';
+
+var nodemailer = require("nodemailer");
+
+var transporter = nodemailer.createTransport();
+
+module.exports = {
+  sendMail: function sendMail(recipient, subject, message) {
+    var mailOptions = {
+      from: "Tango Nigeria ✔ <no-reply@tangong.com>",
+      to: recipient,
+      subject: subject,
+      // text: "Hello world ✔",
+      html: "<b>" + message + "</b>"
+    };
+
+    transporter.sendMail(mailOptions, function (error, response) {
+      if (error) {
+        console.log(error);
+        return;
+      }
+    });
+  }
+};
+//# sourceMappingURL=mailer.controller.js.map
