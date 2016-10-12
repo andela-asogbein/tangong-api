@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "node_modules/.bin/esw src",
     "dev": "nodemon -w src --exec \"babel-node src/server.js --presets es2015\"",
-    "build": "babel src -s -D -d dist --presets es2015",
+    "build": "./node_modules/.bin/babel src -s -D -d dist --presets es2015",
     "start": "node dist/server.js",
     "prestart": "npm run -s build"
   },
