@@ -4,8 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "lint": "node_modules/.bin/esw controllers"
+    "lint": "node_modules/.bin/esw src",
+    "dev": "nodemon -w src --exec \"babel-node src --presets es2015\"",
+    "build": "babel src -s -D -d dist --presets es2015",
+    "start": "node dist/server.js",
+    "prestart": "npm run -s build"
   },
   "author": "",
   "license": "ISC",
@@ -31,8 +34,11 @@
     "request": "^2.58.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.16.0",
+    "babel-preset-es2015": "^6.9.0",
     "eslint": "^3.7.1",
     "eslint-plugin-import": "1.6.1",
-    "eslint-watch": "2.1.11"
+    "eslint-watch": "2.1.11",
+    "nodemon": "^1.11.0"
   }
 }
