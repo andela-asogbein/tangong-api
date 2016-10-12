@@ -6,24 +6,11 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
 
-// var cookieParser = require('cookie-parser');
-
-// //for auth
-// var nodemailer = require('nodemailer');
-
-// var bcrypt = require('bcrypt-nodejs');
-// var async = require('async');
-// var crypto = require('crypto');
-
-//mongodb connection
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/tango_db');
 
-// app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan("dev"));
-// app.use(passport.initialize());
-// app.use(passport.session());
 
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -32,10 +19,10 @@ app.use(function(req, res, next) {
     next();
 });
 
-require('./routes/user.route')(app);
-require('./routes/gig.route')(app);
-require('./routes/category.route')(app);
-require('./routes/payment.route')(app);
-require('./routes/connection.route')(app);
+require('./src/routes/user.route')(app);
+require('./src/routes/gig.route')(app);
+require('./src/routes/category.route')(app);
+require('./src/routes/payment.route')(app);
+require('./src/routes/connection.route')(app);
 
 module.exports = app;
