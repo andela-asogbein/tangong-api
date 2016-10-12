@@ -1,6 +1,5 @@
 'use strict';
 
-//database
 var mongoose = require('mongoose');
 require("../models/user.model");
 require("../models/gig.model");
