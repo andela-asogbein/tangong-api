@@ -1,36 +1,28 @@
-'use strict';
 var express = require('express');
-var userRouter = express.Router();
-
-//authentication
-var jwt = require('jsonwebtoken');
-var superSecret = 'tangowebapplication';
+var router = express.Router();
 
 var user = require('../controllers/user.controller');
+var auth = require('../controllers/auth.controller');
 
 module.exports = function(app) {
 
-  userRouter.post('/forgot', user.forgot);
-  userRouter.post('/authenticate', user.authenticateUser);
-  userRouter.post('/reset/:token', user.reset);
+    router.route('/users')
+        .get(user.getUsers)
+        .post(user.addUser)
+        .delete(user.deleteAllUsers);
 
-  userRouter.route('/users')
-    .get(user.getUsers)
-    .post(user.addUser)
-    .delete(user.verifyToken, user.deleteAllUsers);
+    router.route('/user/:user_id')
+        .get(user.getOneUser)
+        .put(auth.verifyToken, user.updateUser)
+        .delete(auth.verifyToken, user.deleteUser);
 
-  userRouter.route('/user/:user_id')
-    .get(user.getOneUser)
-    .put(user.verifyToken, user.updateUser)
-    .delete(user.verifyToken, user.deleteUser);
+    router.get('/me', auth.verifyToken, function(req, res) {
+        res.send(req.user);
+    });
 
-  userRouter.get('/me', user.verifyToken, function(req, res) {
-    res.send(req.user);
-  });
-
-  userRouter.get('/user/username/:username', user.getByUsername);
-  userRouter.get('/user/email/:email', user.getUserByEmail);
+    router.get('/user/username/:username', user.getByUsername);
+    router.get('/user/email/:email', user.getUserByEmail);
 
 
-  app.use('/api', userRouter);
+    app.use('/api', router);
 };

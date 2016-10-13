@@ -1,82 +1,19 @@
-'use strict';
-
 var mongoose = require('mongoose');
 require("../models/user.model");
 require("../models/gig.model");
 
-var async = require('async');
-var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 
 var User = mongoose.model('User');
 var Gig = mongoose.model("Gig");
 
 var mailer = require("./mailer.controller.js");
-var bcrypt = require('bcrypt-nodejs');
 
-//authentication
 var jwt = require('jsonwebtoken');
 var superSecret = 'tangoforme';
 
 
 module.exports = {
-
-  authenticateUser: function(req, res) {
-    User.findOne({
-      username: req.body.username,
-    }).select('username password email').exec(function(err, user) {
-      if (err) {
-        return res.json(err);
-      } else if (!user) {
-        res.json({
-          message: 'User not found'
-        });
-      } else {
-        var validPassword = user.comparePassword(req.body.password);
-        if (!validPassword) {
-          res.json({
-            message: 'Wrong password'
-          });
-        } else {
-          var token = jwt.sign({
-            id: user._id,
-            username: user.username,
-            email: user.email
-          }, superSecret, {
-            expiresInMinutes: 43200
-          }); //end var token
-          res.json({
-            success: true,
-            message: 'Token Generated',
-            token: token
-          });
-        }
-      }
-    });
-  },
-
-  verifyToken: function(req, res, next) {
-    var token = req.headers['x-access-token'];
-
-    //if there is a token, decode it
-    if (token) {
-      jwt.verify(token, superSecret, function(err, user) {
-        if (err) {
-          return res.json({
-            message: 'Token could not be authenticated'
-          });
-        } else {
-          req.user = user;
-          // res.json(user);
-          next();
-        }
-      });
-    } else {
-      return res.status(403).json({
-        message: 'Token not found'
-      });
-    }
-  },
   getUserById: function(req, res, next) {
     User.findOne({
       username: req.params.username
@@ -126,6 +63,7 @@ module.exports = {
 
   addUser: function(req, res) {
     var user = new User(req.body);
+    user.setPassword(req.body.password);
     user.save(function(err, user) {
       if (err) {
         return res.json(err);
@@ -190,26 +128,6 @@ module.exports = {
         });
       })
     })
-    // bcrypt.hash(req.body.password, null, null, function(err, hash) {
-    //   req.body.password = hash;
-    //   User.update({
-    //     _id: req.params.user_id
-    //   }, req.body, function(err, user) {
-    //     if (err) {
-    //       return res.json(err);
-    //     }
-    //     var token = jwt.sign({
-    //       id: req.body._id,
-    //       username: req.body.username,
-    //       email: req.body.email
-    //     }, superSecret, {
-    //       expiresInMinutes: 43200
-    //     });
-    //     res.status(201).json({
-    //       token: token
-    //     });
-    //   });
-    // });
   },
 
   deleteUser: function(req, res) {
@@ -237,92 +155,6 @@ module.exports = {
         return res.json(err);
       }
       res.status(200).json(users);
-    });
-  },
-
-  forgot: function(req, res, next) {
-
-    async.waterfall([
-      function(done) {
-        crypto.randomBytes(20, function(err, buf) {
-          var token = buf.toString('hex');
-          done(err, token);
-        });
-      },
-      function(token, done) {
-        User.findOne({
-          email: req.body.email
-        }, function(err, user) {
-          if (!user) {
-            return res.json({
-              message: 'No user found'
-            });
-          }
-
-          user.resetPasswordToken = token;
-          user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
-          user.save(function(err) {
-            done(err, token, user);
-          });
-        });
-      },
-      function(token, user, done) {
-        var transporter = nodemailer.createTransport();
-        var mailOptions = {
-          to: user.email,
-          from: 'Tango Nigeria ✔ <no-reply@tangong.com>',
-          subject: 'Tango Password Reset',
-          text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-            'Please click on the following link, or paste this into your browser to complete the process:\n\n' + '\n\n' + 'http://andela-ssunday.github.io/tangong/#!/reset/password/' + token + '\n\n' +
-            ' If you did not request this, please ignore this email and your password will remain unchanged.\n'
-        };
-        transporter.sendMail(mailOptions, function(err, res) {
-          done(err, 'done');
-          return res;
-        });
-      }
-    ], function(err) {
-      if (err) return next(err);
-      res.json({
-        message: 'Message Sent!'
-      });
-    });
-  },
-
-  reset: function(req, res) {
-    async.waterfall([
-      function(done) {
-        User.findOne({
-          resetPasswordToken: req.params.token,
-          resetPasswordExpires: {
-            $gt: Date.now()
-          }
-        }, function(err, user) {
-          if (!user) {
-            return res.json({
-              'message': 'User does not exist'
-            });
-          }
-
-          user.password = req.body.password;
-          user.resetPasswordToken = undefined;
-          user.resetPasswordExpires = undefined;
-
-          user.save(function(err, result) {
-            if (err) {
-              return res.json(err);
-            }
-            console.log(result);
-            res.json(result);
-          });
-        });
-      }
-    ], function(err) {
-      if (err) return err;
-      res.json({
-        message: 'Password changed!'
-      });
     });
   }
 };

@@ -7,6 +7,7 @@ import user from './routes/user.route';
 import gig from './routes/gig.route';
 import payment from './routes/payment.route';
 import connection from './routes/connection.route';
+import auth from './routes/auth.route';
 
 let app = express();
 
@@ -27,6 +28,7 @@ category(app);
 user(app);
 gig(app);
 payment(app);
-connection(app)
+connection(app);
+auth(app);
 
 export default app;
