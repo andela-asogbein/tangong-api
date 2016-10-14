@@ -8,7 +8,7 @@ let router = express.Router();
 let categoryRoutes = app => {
     router.route("/categories")
         .get(category.getAll)
-        .post(auth.verifyToken, category.create)
+        .post(auth.verifyToken, auth.isAdmin, category.create) //example of the two verification permissions allowed
         .delete(category.remove)
     router.route("/category/:id")
         .get(category.getOne)

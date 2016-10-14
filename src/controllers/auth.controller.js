@@ -59,6 +59,28 @@ module.exports = {
             });
         }
     },
+    isAdmin: function(req, res, next) {
+        User.findOne({
+            email: req.user.email
+        }, function(err, user) {
+            if (err) {
+                return res.json(err);
+            }
+            if (user) {
+                if (user.role === 'admin') {
+                    next();
+                } else {
+                    return res.json({
+                        message: 'Permission denied'
+                    })
+                }
+            } else {
+                return res.json({
+                    message: 'User not found'
+                })
+            }
+        });
+    },
     forgot: function(req, res, next) {
 
         async.waterfall([
