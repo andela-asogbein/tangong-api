@@ -30,6 +30,11 @@ var UserSchema = new Schema({
     hash: {
         type: String
     },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    }
 }, {
     timeStamps: true
 });
