@@ -11,7 +11,8 @@ var user = require('../controllers/user.controller');
 module.exports = function(app){
   gigRouter.route('/gigs/')
     .get(gig.getGigs)
-    .post(auth.verifyToken,gig.addImage,gig.addGig)
+    // .post(auth.verifyToken,gig.addImage,gig.addGig)
+    .post(gig.addGig)
     .delete(auth.verifyToken, gig.deleteAll);
 
   gigRouter.get('/randomGigs', gig.getRandomGigs);

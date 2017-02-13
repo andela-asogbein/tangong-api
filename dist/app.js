@@ -40,6 +40,10 @@ var _connection = require('./routes/connection.route');
 
 var _connection2 = _interopRequireDefault(_connection);
 
+var _auth = require('./routes/auth.route');
+
+var _auth2 = _interopRequireDefault(_auth);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
@@ -62,6 +66,7 @@ app.use(function (req, res, next) {
 (0, _gig2.default)(app);
 (0, _payment2.default)(app);
 (0, _connection2.default)(app);
+(0, _auth2.default)(app);
 
 exports.default = app;
 //# sourceMappingURL=app.js.map

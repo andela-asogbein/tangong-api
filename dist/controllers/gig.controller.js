@@ -35,7 +35,7 @@ module.exports = {
     });
   },
   addGig: function addGig(req, res) {
-    req.body.addedBy = req.user.id;
+    // req.body.addedBy = req.user.id;
     var gig = new Gig(req.body);
     gig.save(function (err, gig) {
       if (err) {

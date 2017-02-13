@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+    value: true
 });
 
 var _mongoose = require('mongoose');
@@ -13,16 +13,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Schema = _mongoose2.default.Schema;
 
 var categorySchema = new Schema({
-	name: {
-		type: 'String',
-		required: 'Category name is required'
-	},
-	description: {
-		type: 'String'
-	},
-	iconLink: {
-		type: 'String'
-	}
+    name: {
+        type: 'String',
+        required: 'Category name is required'
+    },
+    description: {
+        type: 'String'
+    },
+    iconLink: {
+        type: 'String'
+    }
+}, {
+    timeStamps: true
 });
 
 exports.default = _mongoose2.default.model("Category", categorySchema);
